@@ -86,6 +86,12 @@ static EWRAM_DATA u32 sBattleTowerMultiBattleTypeFlags = 0;
 
 struct ListMenuTemplate gScrollableMultichoice_ListMenuTemplate;
 
+static const u8 sMystery1[] = INCBIN_U8("data/ctf/start_key.txt");
+static const u8 sMystery2[] = INCBIN_U8("data/ctf/key.bf");
+static const u8 sMystery3[] = INCBIN_U8("data/ctf/lock.txt");
+static const u8 sMystery4[] = INCBIN_U8("data/ctf/zombie_brain.bf");
+static const u8 sMystery5[] = INCBIN_U8("data/ctf/end_brain.txt");
+
 void TryLoseFansFromPlayTime(void);
 void SetPlayerGotFirstFans(void);
 u16 GetNumFansOfPlayerInTrainerFanClub(void);
@@ -4374,4 +4380,80 @@ void SetPlayerGotFirstFans(void)
 u8 Script_TryGainNewFanFromCounter(void)
 {
     return TryGainNewFanFromCounter(gSpecialVar_0x8004);
+}
+
+void MysteryAddress(void)
+{
+    ConvertIntToHexStringN(gStringVar1, (u32)&sMystery1[0], STR_CONV_MODE_LEADING_ZEROS, 8);
+}
+
+static const u8 sMysteryCries[] = ".. - --.. ..--.- .--- ..- ... - ..--.- -- ----- .-. ... ...-- -.-. ----- -.. ...--";
+
+static void Task_MysteriousCrying(u8 taskId)
+{
+    switch(gTasks[taskId].data[0])
+    {
+    case 0:
+        if(!IsCryFinished())
+            return;
+        if(sMysteryCries[gTasks[taskId].data[1]] == '\0')
+        {
+            FadeInBGM(4);
+            DestroyTask(taskId);
+        }
+        else if(sMysteryCries[gTasks[taskId].data[1]] == '.')
+        {
+            PlayCry5(SPECIES_BULBASAUR, 0);
+            gTasks[taskId].data[0] = 1;
+        }
+        else if(sMysteryCries[gTasks[taskId].data[1]] == '-')
+        {
+            PlayCry5(SPECIES_CHARMANDER, 0);
+            gTasks[taskId].data[0] = 1;
+        }
+        else if(sMysteryCries[gTasks[taskId].data[1]] == ' ')
+        {
+            gTasks[taskId].data[0] = 2;
+            gTasks[taskId].data[2] = 60;
+        }
+        break;
+    case 1:
+        if(IsCryFinished())
+        {
+            gTasks[taskId].data[0] = 0;
+            gTasks[taskId].data[1]++;
+        }
+        break;
+    case 2:
+        if(gTasks[taskId].data[2] == 0)
+        {
+            gTasks[taskId].data[0] = 0;
+            gTasks[taskId].data[1]++;
+        }
+        else
+        {
+            gTasks[taskId].data[2]--;
+        }
+        break;
+    }
+}
+
+void MysteriousCrying(void)
+{
+    u8 id;
+    if(FuncIsActiveTask(Task_MysteriousCrying))
+    {
+        DestroyTask(FindTaskIdByFunc(Task_MysteriousCrying));
+    }
+    id = CreateTask(Task_MysteriousCrying, 0);
+    gTasks[id].data[0] = 0;
+    gTasks[id].data[1] = 0;
+}
+
+void EndMysteriousCrying(void)
+{
+    if(FuncIsActiveTask(Task_MysteriousCrying))
+    {
+        DestroyTask(FindTaskIdByFunc(Task_MysteriousCrying));
+    }
 }

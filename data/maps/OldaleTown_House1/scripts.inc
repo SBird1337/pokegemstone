@@ -1,15 +1,12 @@
-OldaleTown_House1_MapScripts:: @ 81FBE85
+OldaleTown_House1_MapScripts::
 	.byte 0
 
-OldaleTown_House1_EventScript_Woman:: @ 81FBE86
-	msgbox OldaleTown_House1_Text_LeftPokemonGoesOutFirst, MSGBOX_NPC
+EncryptedBrains_Explain::
+	callnative MysteryAddress
+	msgbox Text_Explain_Brain, MSGBOX_NPC
 	end
 
-OldaleTown_House1_Text_LeftPokemonGoesOutFirst: @ 81FBE8F
-	.string "When a POKéMON battle starts, the one\n"
-	.string "at the left of the list goes out first.\p"
-	.string "So, when you get more POKéMON in your\n"
-	.string "party, try switching around the order\l"
-	.string "of your POKéMON.\p"
-	.string "It could give you an advantage.$"
-
+Text_Explain_Brain:
+	.string "I've lost my keys, now I'm losing my\n"
+	.string "mind! It must be something with my\l"
+	.string "brain. All I can remember is 0x{STR_VAR_1}.$"

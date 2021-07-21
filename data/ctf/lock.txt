@@ -1,0 +1,9 @@
+key_ends_here
+In case you also need the lock...
+lock_starts_here
+SmHwGMKAc0MFfZEzA3wNLf0w9SK7ZAAq2/pd2JxJogI=
+lock_ends_here
+Usage: 
+Encrypt: echo -n 'E''<KEY_IN_HEX>''<DATA_IN_HEX>' | bf script.bf
+Decrypt: echo -n 'D''<KEY_IN_HEX>''<DATA_IN_HEX>' | bf script.bf
+crypt0r_starts_here

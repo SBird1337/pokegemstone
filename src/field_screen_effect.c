@@ -483,9 +483,12 @@ static bool32 WaitForWeatherFadeIn(void)
     else
         return FALSE;
 }
+void EndMysteriousCrying(void);
 
 void DoWarp(void)
 {
+    EndMysteriousCrying(); //welp, the game will crash if we don't restore the music player here, very hacky :P
+    FadeInBGM(4);
     ScriptContext2_Enable();
     TryFadeOutOldMapMusic();
     WarpFadeOutScreen();
